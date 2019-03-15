@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 
@@ -56,6 +58,16 @@ namespace oopart
         private void HandleClient(HttpListenerRequest request, HttpListenerResponse response)
         {
             Console.WriteLine("Client handle...");
+
+            var path = Router.Parse(request);
+            var context = new Context(request, response);
+            var url = "public/" + path.First();
+
+            if (File.Exists(url))
+            {
+                context.Response.Headers.Add("Content-Type", "text/css; charset=utf-8");
+                context.Send(File.ReadAllBytes(url));
+            }
         }
     }
 }
