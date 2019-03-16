@@ -29,7 +29,8 @@ namespace OOPart
 
         public void SendFile(string filename, byte[] bytes)
         {
-            this.Response.Headers.Add("Content-Type", "text/css; charset=utf-8");
+            var contentType = MIMEType.GetContentType(filename);
+            this.Response.Headers.Add("Content-Type", contentType);
 
             this.Send(bytes);
         }
