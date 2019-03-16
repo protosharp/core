@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 
@@ -14,6 +17,31 @@ namespace OOPart
             this.Request = request;
             this.Response = response;
             this.Response.Headers["Server"] = "OOPart";
+        }
+
+        public Dictionary<string, string> ParseBody(string body)
+        {
+            var form = new Dictionary<string, string>();
+
+            var splitFields = new char[]{ '&' };
+            var splitKeyValue = new char[]{ '=' };
+            
+            var fields = body.Split(splitFields);
+            var keysValues = fields.Select(x => x.Split(splitKeyValue));
+
+            foreach(var item in keysValues)
+            {
+                form.Add(item[0], item[1]);
+            }
+
+            return form;
+        }
+        public string ReadBody()
+        {
+            var stream = this.Request.InputStream;
+            var streamReader = new StreamReader(stream);
+
+            return streamReader.ReadToEnd();
         }
 
         public void Send(byte[] bytes)
