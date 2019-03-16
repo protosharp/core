@@ -63,10 +63,16 @@ namespace OOPart
             var context = new Context(request, response);
             var url = "public/" + path.First();
 
-            if (File.Exists(url))
+            if (path.Length == 1)
             {
-                context.Response.Headers.Add("Content-Type", "text/css; charset=utf-8");
-                context.Send(File.ReadAllBytes(url));
+                if(! File.Exists(url))
+                {
+                    //context.Error404();
+                    return;
+                }
+
+                context.SendFile(url, File.ReadAllBytes(url));
+                return;
             }
         }
     }

@@ -27,6 +27,13 @@ namespace OOPart
             this.Response.Close();
         }
 
+        public void SendFile(string filename, byte[] bytes)
+        {
+            this.Response.Headers.Add("Content-Type", "text/css; charset=utf-8");
+
+            this.Send(bytes);
+        }
+
         public void SendText(string text)
         { 
             this.Response.Headers.Add("Content-Type", "text/plain");
