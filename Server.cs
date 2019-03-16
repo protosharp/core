@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 
-namespace oopart
+namespace OOPart
 {
     public class Server
     {

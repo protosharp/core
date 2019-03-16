@@ -1,7 +1,7 @@
 using System.Net;
 using System.Text;
 
-namespace oopart
+namespace OOPart
 {
     public class Context
     {
@@ -13,7 +13,7 @@ namespace oopart
             this.encoding = Encoding.UTF8;
             this.Request = request;
             this.Response = response;
-            this.Response.Headers["Server"] = "oopart";
+            this.Response.Headers["Server"] = "OOPart";
         }
 
         public void Send(byte[] bytes)

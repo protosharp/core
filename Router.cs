@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Net;
 
-namespace oopart
+namespace OOPart
 {
     public static class Router
     {
