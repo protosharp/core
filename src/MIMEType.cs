@@ -17,6 +17,11 @@ namespace OOPart
                 return "application/x-javascript";
             }
 
+            if(IsExtension(filename, ".html"))
+            {
+                return "text/html";
+            }
+
             return "text/plain";
         }
     }
