@@ -3,7 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 
-namespace OOPart
+namespace OOPArt
 {
     public static class Router
     {

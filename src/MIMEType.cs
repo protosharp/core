@@ -1,6 +1,6 @@
 using System;
 
-namespace OOPart
+namespace OOPArt
 {
     public static class MIMEType
     {

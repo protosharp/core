@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 
-namespace OOPart
+namespace OOPArt
 {
     public class Server
     {
@@ -74,6 +74,8 @@ namespace OOPart
                 context.SendFile(url, File.ReadAllBytes(url));
                 return;
             }
+
+            
         }
     }
 }
