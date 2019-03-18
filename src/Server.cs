@@ -75,7 +75,24 @@ namespace OOPArt
                 return;
             }
 
-            
+            if(path.Length == 3)
+            {
+                string area = path[0];
+                string functionName = path[1];
+                string methodName = path[2];
+                
+                var body = context.ReadBody();
+                var form = context.ParseBody(body);
+                var parameters = context.ParseParameters(form);
+
+                if(area.Equals("Functions", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var result = Router.Call(functionName, methodName, parameters);
+                    context.SendText(result.ToString());
+                    return;
+                }
+
+            }
         }
     }
 }
