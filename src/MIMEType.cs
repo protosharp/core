@@ -17,6 +17,11 @@ namespace OOPArt
                 return "application/x-javascript";
             }
 
+            if(IsExtension(filename, ".json"))
+            {
+                return "application/json";
+            }
+
             if(IsExtension(filename, ".html"))
             {
                 return "text/html";
