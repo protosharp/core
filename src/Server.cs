@@ -84,7 +84,7 @@ namespace OOPArt
                 string methodName = path[2];
                 
                 var body = context.ReadBody();
-                var form = context.ParseBody(body);
+                var form = context.ParseBody(body, request.ContentType);
                 var parameters = context.ParseParameters(form);
 
                 if(area.Equals("Functions", StringComparison.InvariantCultureIgnoreCase))

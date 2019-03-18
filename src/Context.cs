@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace OOPArt
 {
@@ -20,8 +21,13 @@ namespace OOPArt
             this.Response.Headers["Server"] = "OOPArt";
         }
 
-        public Dictionary<string, string> ParseBody(string body)
+        public Dictionary<string, string> ParseBody(string body, string contentType)
         {
+            if(contentType == "application/json")
+            {
+                return JsonConvert.DeserializeObject<Dictionary<string, string>>(body);
+            }
+            
             var form = new Dictionary<string, string>();
 
             var splitFields = new char[]{ '&' };
@@ -32,7 +38,7 @@ namespace OOPArt
 
             foreach(var item in keysValues)
             {
-                form.Add(item[0], item[1]);
+                form.Add(item.First(), item.Last());
             }
 
             return form;
