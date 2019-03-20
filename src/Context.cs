@@ -16,7 +16,7 @@ namespace OOPArt
             this.encoding = Encoding.UTF8;
             this.Request = request;
             this.Response = response;
-            this.Response.Headers["Server"] = "OOPart";
+            this.Response.Headers["Server"] = "OOPArt";
         }
 
         public Dictionary<string, string> ParseBody(string body)
@@ -36,6 +36,12 @@ namespace OOPArt
 
             return form;
         }
+
+        public object[] ParseParameters(Dictionary<string, string> form)
+        {
+            return new object[]{ int.Parse(form["a"]), int.Parse(form["b"])};
+        }
+
         public string ReadBody()
         {
             var stream = this.Request.InputStream;
