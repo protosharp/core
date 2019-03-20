@@ -1,7 +1,12 @@
 language: csharp
+dist: xenial
 dotnet: 2.2
 mono: none
 solution: OOPArt.sln
 script:
   - dotnet restore
+  - dotnet build
   - dotnet test
+global:
+  - DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
+  - DOTNET_CLI_TELEMETRY_OPTOUT=1
