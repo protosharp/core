@@ -1,0 +1,7 @@
+language: csharp
+dotnet: 2.1.502
+mono: none
+solution: OOPArt.sln
+script:
+  - dotnet restore
+  - dotnet test
