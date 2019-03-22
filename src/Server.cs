@@ -8,22 +8,23 @@ namespace OOPArt
 {
     public class Server
     {
-        private HttpListener _listener;
+        private readonly HttpListener _listener;
         private readonly int _port;
-        private Thread _thread;
+        private readonly Thread _thread;
 
         public Server(int port = 80)
         {
             this._port = port;
+
+            this._listener = new HttpListener();
+            this._thread = new Thread(Listener);
         }
 
         public void Start()
         {
-            this._listener = new HttpListener();
             this._listener.Prefixes.Add($"http://*:{this._port}/");
-            this._listener.Start();
 
-            this._thread = new Thread(Listener);
+            this._listener.Start();
             this._thread.Start();
         }
 
@@ -59,8 +60,9 @@ namespace OOPArt
         {
             Console.WriteLine("Client handle...");
 
-            var path = Router.Parse(request);
             var context = new Context(request, response);
+
+            var path = context.ParseUrl();
             var url = "public/" + path.First();
 
             if (path.Length == 1)

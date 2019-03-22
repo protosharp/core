@@ -8,12 +8,13 @@ namespace OOPArt
 {
     public class Context
     {
-        private Encoding encoding;
+        private readonly Encoding _encoding;
         public HttpListenerRequest Request {get; set;}
         public HttpListenerResponse Response {get; set;}
+
         public Context(HttpListenerRequest request, HttpListenerResponse response)
         {
-            this.encoding = Encoding.UTF8;
+            this._encoding = Encoding.UTF8;
             this.Request = request;
             this.Response = response;
             this.Response.Headers["Server"] = "OOPArt";
@@ -40,6 +41,29 @@ namespace OOPArt
         public object[] ParseParameters(Dictionary<string, string> form)
         {
             return new object[]{ int.Parse(form["a"]), int.Parse(form["b"])};
+        }
+
+        public string[] ParseUrl()
+        {
+            var splitted = this.Request.Url.Segments
+                .Select(s => s.ToLower().Replace("/", ""))
+                .Where(w => w.Length > 0)
+                .ToArray<string>();
+            
+            if (this.Request.Url.LocalPath.Contains("."))
+            {
+                return new [] { splitted.Last() };
+            }
+
+            string controller = "Home", action = "Index";
+
+            if(splitted.Length >= 2)
+            {
+                controller = splitted[0];
+                action = splitted[1];
+            }
+
+            return new [] { controller, action }.Concat(splitted.Skip(2)).ToArray<string>();
         }
 
         public string ReadBody()
@@ -73,7 +97,7 @@ namespace OOPArt
         { 
             this.Response.Headers.Add("Content-Type", "text/plain");
             
-            var bytes = this.encoding.GetBytes(text);
+            var bytes = this._encoding.GetBytes(text);
             this.Send(bytes);
         }
     }
