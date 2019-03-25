@@ -86,11 +86,20 @@ namespace OOPArt
                 
                 var body = context.ReadBody();
                 var form = context.ParseBody(body, request.ContentType);
-                var parameters = context.ParseParameters(form);
+                
 
                 if(area.Equals("Functions", StringComparison.InvariantCultureIgnoreCase))
                 {
+                    var parameters = context.ParseParameters(form);
+                    
                     var result = Router.Call(functionName, methodName, parameters);
+                    context.SendJson(result);
+                    return;
+                }
+
+                if(area.Equals("Models", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var result = Router.Call(functionName, methodName, null);
                     context.SendJson(result);
                     return;
                 }
