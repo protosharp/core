@@ -21,17 +21,17 @@ namespace OOPArt
         public virtual string TableName => "unknow";
 
 
-        public IEnumerable<object> All()
+        public virtual IEnumerable<object> All()
         {
             return this._connection.Query<object>($"SELECT * FROM {this.TableName};");
         }
 
-        public bool Create()
+        public virtual bool Create()
         {
             return this._connection.Execute($"INSERT INTO {this.TableName} (name, age) VALUES ('{Guid.NewGuid().ToString()}', {(new Random()).Next(0, 100)});") > 0;
         }
         
-        public object Find()
+        public virtual object Find()
         {
             return this._connection.Query<object>($"SELECT * FROM {this.TableName} LIMIT 1");
         }
