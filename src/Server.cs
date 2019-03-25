@@ -35,6 +35,7 @@ namespace OOPArt
                 AsyncCallback callback = new AsyncCallback(ListenerCallback);
                 IAsyncResult result = this._listener.BeginGetContext(callback, this._listener);
 
+                Console.WriteLine("Server running....");
                 result.AsyncWaitHandle.WaitOne();
             }
         }
@@ -90,7 +91,7 @@ namespace OOPArt
                 if(area.Equals("Functions", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var result = Router.Call(functionName, methodName, parameters);
-                    context.SendText(result.ToString());
+                    context.SendJson(result);
                     return;
                 }
 

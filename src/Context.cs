@@ -99,6 +99,15 @@ namespace OOPArt
             this.Send(bytes);
         }
 
+        public void SendJson(object data)
+        {
+            this.Response.Headers.Add("Content-Type", "application/json");
+
+            var json = JsonConvert.SerializeObject(data);
+            var bytes = this._encoding.GetBytes(json);
+            this.Send(bytes);
+        }
+
         public void SendText(string text)
         { 
             this.Response.Headers.Add("Content-Type", "text/plain");
