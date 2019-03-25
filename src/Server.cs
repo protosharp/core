@@ -8,22 +8,23 @@ namespace OOPArt
 {
     public class Server
     {
-        private HttpListener _listener;
+        private readonly HttpListener _listener;
         private readonly int _port;
-        private Thread _thread;
+        private readonly Thread _thread;
 
         public Server(int port = 80)
         {
             this._port = port;
+
+            this._listener = new HttpListener();
+            this._thread = new Thread(Listener);
         }
 
         public void Start()
         {
-            this._listener = new HttpListener();
             this._listener.Prefixes.Add($"http://*:{this._port}/");
-            this._listener.Start();
 
-            this._thread = new Thread(Listener);
+            this._listener.Start();
             this._thread.Start();
         }
 
@@ -34,6 +35,7 @@ namespace OOPArt
                 AsyncCallback callback = new AsyncCallback(ListenerCallback);
                 IAsyncResult result = this._listener.BeginGetContext(callback, this._listener);
 
+                Console.WriteLine("Server running....");
                 result.AsyncWaitHandle.WaitOne();
             }
         }
@@ -59,8 +61,9 @@ namespace OOPArt
         {
             Console.WriteLine("Client handle...");
 
-            var path = Router.Parse(request);
             var context = new Context(request, response);
+
+            var path = context.ParseUrl();
             var url = "public/" + path.First();
 
             if (path.Length == 1)
@@ -75,7 +78,24 @@ namespace OOPArt
                 return;
             }
 
-            
+            if(path.Length == 3)
+            {
+                string area = path[0];
+                string functionName = path[1];
+                string methodName = path[2];
+                
+                var body = context.ReadBody();
+                var form = context.ParseBody(body, request.ContentType);
+                var parameters = context.ParseParameters(form);
+
+                if(area.Equals("Functions", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var result = Router.Call(functionName, methodName, parameters);
+                    context.SendJson(result);
+                    return;
+                }
+
+            }
         }
     }
 }

@@ -3,24 +3,31 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace OOPArt
 {
     public class Context
     {
-        private Encoding encoding;
+        private readonly Encoding _encoding;
         public HttpListenerRequest Request {get; set;}
         public HttpListenerResponse Response {get; set;}
+
         public Context(HttpListenerRequest request, HttpListenerResponse response)
         {
-            this.encoding = Encoding.UTF8;
+            this._encoding = Encoding.UTF8;
             this.Request = request;
             this.Response = response;
-            this.Response.Headers["Server"] = "OOPart";
+            this.Response.Headers["Server"] = "OOPArt";
         }
 
-        public Dictionary<string, string> ParseBody(string body)
+        public Dictionary<string, string> ParseBody(string body, string contentType)
         {
+            if(contentType == "application/json")
+            {
+                return JsonConvert.DeserializeObject<Dictionary<string, string>>(body);
+            }
+            
             var form = new Dictionary<string, string>();
 
             var splitFields = new char[]{ '&' };
@@ -31,11 +38,40 @@ namespace OOPArt
 
             foreach(var item in keysValues)
             {
-                form.Add(item[0], item[1]);
+                form.Add(item.First(), item.Last());
             }
 
             return form;
         }
+
+        public object[] ParseParameters(Dictionary<string, string> form)
+        {
+            return new object[]{ int.Parse(form["a"]), int.Parse(form["b"])};
+        }
+
+        public string[] ParseUrl()
+        {
+            var splitted = this.Request.Url.Segments
+                .Select(s => s.ToLower().Replace("/", ""))
+                .Where(w => w.Length > 0)
+                .ToArray<string>();
+            
+            if (this.Request.Url.LocalPath.Contains("."))
+            {
+                return new [] { splitted.Last() };
+            }
+
+            string controller = "Home", action = "Index";
+
+            if(splitted.Length >= 2)
+            {
+                controller = splitted[0];
+                action = splitted[1];
+            }
+
+            return new [] { controller, action }.Concat(splitted.Skip(2)).ToArray<string>();
+        }
+
         public string ReadBody()
         {
             var stream = this.Request.InputStream;
@@ -63,11 +99,20 @@ namespace OOPArt
             this.Send(bytes);
         }
 
+        public void SendJson(object data)
+        {
+            this.Response.Headers.Add("Content-Type", "application/json");
+
+            var json = JsonConvert.SerializeObject(data);
+            var bytes = this._encoding.GetBytes(json);
+            this.Send(bytes);
+        }
+
         public void SendText(string text)
         { 
             this.Response.Headers.Add("Content-Type", "text/plain");
             
-            var bytes = this.encoding.GetBytes(text);
+            var bytes = this._encoding.GetBytes(text);
             this.Send(bytes);
         }
     }
