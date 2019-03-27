@@ -3,17 +3,20 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using ProtoSharp.Interfaces;
 
-namespace OOPArt
+namespace ProtoSharp
 {
     public class Server
     {
+        private IConfiguration _configuration;
         private readonly HttpListener _listener;
         private readonly int _port;
         private readonly Thread _thread;
 
-        public Server(int port = 80)
+        public Server(IConfiguration configuration, int port = 80)
         {
+            this._configuration = configuration;
             this._port = port;
 
             this._listener = new HttpListener();
@@ -86,11 +89,20 @@ namespace OOPArt
                 
                 var body = context.ReadBody();
                 var form = context.ParseBody(body, request.ContentType);
-                var parameters = context.ParseParameters(form);
+                
 
                 if(area.Equals("Functions", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    var result = Router.Call(functionName, methodName, parameters);
+                    var parameters = context.ParseParameters(form);
+                    
+                    var result = Router.Call(functionName, methodName, new object[]{this._configuration.Database()}, parameters);
+                    context.SendJson(result);
+                    return;
+                }
+
+                if(area.Equals("Models", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var result = Router.Call(functionName, methodName, new object[]{this._configuration.Database()}, null);
                     context.SendJson(result);
                     return;
                 }

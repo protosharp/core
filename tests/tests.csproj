@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\OOPArt.csproj" />
+    <ProjectReference Include="..\src\ProtoSharp.csproj" />
   </ItemGroup>
 
 </Project>
