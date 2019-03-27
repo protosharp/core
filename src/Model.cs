@@ -8,12 +8,11 @@ namespace ProtoSharp
 {
     public class Model: IDisposable
     {
-        protected const string CONNECTION_STRING = "";
         private IDbConnection _connection;
 
-        public Model()
+        public Model(IDbConnection connection)
         {
-            this._connection = new NpgsqlConnection (CONNECTION_STRING);
+            this._connection = connection;
 
             this._connection.Open();
         }

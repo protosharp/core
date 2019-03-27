@@ -7,7 +7,7 @@ namespace ProtoSharp
 {
     public static class Router
     {
-        public static object Call(string functionName, string methodName, object[] parameters)
+        public static object Call(string functionName, string methodName, object[] parametersCtor, object[] parametersInvoke)
         {
             var types = Assembly.GetEntryAssembly().GetTypes().Concat(Assembly.GetExecutingAssembly().GetTypes());
 
@@ -19,9 +19,9 @@ namespace ProtoSharp
                     {
                         if(method.Name.EndsWith(methodName, StringComparison.InvariantCultureIgnoreCase))
                         {
-                            var instance = Activator.CreateInstance(type);
+                            var instance = Activator.CreateInstance(type, parametersCtor);
                             
-                            return method.Invoke(instance, parameters);
+                            return method.Invoke(instance, parametersInvoke);
                         }
                     }
                 }
