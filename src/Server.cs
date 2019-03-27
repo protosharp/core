@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 
-namespace OOPArt
+namespace ProtoSharp
 {
     public class Server
     {

@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using OOPArt;
+using ProtoSharp;
 
 namespace Tests.Http
 {

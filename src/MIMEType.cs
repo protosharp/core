@@ -1,6 +1,6 @@
 using System;
 
-namespace OOPArt
+namespace ProtoSharp
 {
     public static class MIMEType
     {
