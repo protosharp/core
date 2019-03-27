@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OOPArt", "src\OOPArt.csproj", "{3D47551C-573E-4C10-B6CE-065DB3554DD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtoSharp", "src\ProtoSharp.csproj", "{3D47551C-573E-4C10-B6CE-065DB3554DD7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tests", "tests\tests.csproj", "{B1AF4EF9-9E11-4AB1-8929-06D037042872}"
 EndProject
