@@ -2,7 +2,7 @@ language: csharp
 dist: xenial
 dotnet: 2.2
 mono: none
-solution: OOPArt.sln
+solution: ProtoSharp.sln
 script:
   - dotnet restore
   - dotnet build
