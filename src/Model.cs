@@ -8,7 +8,7 @@ namespace ProtoSharp
 {
     public class Model: IDisposable
     {
-        private IDbConnection _connection;
+        protected IDbConnection _connection;
 
         public Model(IDbConnection connection)
         {
@@ -25,9 +25,14 @@ namespace ProtoSharp
             return this._connection.Query<object>($"SELECT * FROM {this.TableName};");
         }
 
+        public virtual bool Create(string id, string name)
+        {
+            return this._connection.Execute($"INSERT INTO {this.TableName} (id, name) VALUES ('{id}', '{name}');") > 0;
+        }
+
         public virtual bool Create()
         {
-            return this._connection.Execute($"INSERT INTO {this.TableName} (name, age) VALUES ('{Guid.NewGuid().ToString()}', {(new Random()).Next(0, 100)});") > 0;
+            return this._connection.Execute($"INSERT INTO {this.TableName} (name, age) VALUES ('a name', {(new Random()).Next(0, 100)});") > 0;
         }
 
         public virtual bool Delete(int id)
