@@ -25,6 +25,11 @@ namespace ProtoSharp
             return this._connection.Query<object>($"SELECT * FROM {this.TableName};");
         }
 
+        public virtual long Count()
+        {
+            return this._connection.ExecuteScalar<long>($"SELECT COUNT(*) FROM {this.TableName};");
+        }
+
         public virtual bool Create(string id, string name)
         {
             return this._connection.Execute($"INSERT INTO {this.TableName} (id, name) VALUES ('{id}', '{name}');") > 0;
