@@ -22,7 +22,14 @@ namespace ProtoSharp
 
         public override IEnumerable<object> All()
         {
-            this.Sync();
+            if(this.Count() == 0)
+            {
+                Task.Run(async () =>  await this.Sync()).Wait();
+            }
+            else
+            {
+                this.Sync();
+            }
 
             return base.All();
         }
@@ -42,7 +49,12 @@ namespace ProtoSharp
 
         public virtual void ProcessItem(dynamic item)
         {
-            this.Create(item.id.ToString(), item.name.ToString());
+            try
+            {
+                this.Create(item.id.ToString(), item.name.ToString());
+            }
+            catch
+            { }
         }
 
         public async Task Sync()
